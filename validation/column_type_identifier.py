@@ -1,0 +1,8 @@
+import pandas as pd
+
+def detect_column_types(df: pd.DataFrame):
+
+    return {
+        "numeric": df.select_dtypes(include="number").columns.tolist(),
+        "categorical": df.select_dtypes(include="object").columns.tolist()
+    }

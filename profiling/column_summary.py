@@ -8,7 +8,8 @@ def column_summary(df: pd.DataFrame):
         summary.append({
             "column": col,
             "dtype": str(df[col].dtype),
-            "missing": int(df[col].isna().sum())
+            "missing": int(df[col].isna().sum()),
+            "unique": int(df[col].nunique())
         })
 
     return pd.DataFrame(summary)

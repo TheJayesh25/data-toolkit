@@ -1,11 +1,18 @@
 import pandas as pd
 
-def validate_schema(df: pd.DataFrame, expected_columns):
+def validate_schema(df: pd.DataFrame, expected_schema: dict):
 
-    missing = []
+    issues = []
 
-    for col in expected_columns:
+    for col, dtype in expected_schema.items():
+
         if col not in df.columns:
-            missing.append(col)
+            issues.append(f"Missing column: {col}")
+            continue
 
-    return missing
+        if str(df[col].dtype) != dtype:
+            issues.append(
+                f"{col} expected {dtype} but got {df[col].dtype}"
+            )
+
+    return issues

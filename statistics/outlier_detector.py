@@ -1,13 +1,21 @@
 import pandas as pd
+import numpy as np
 
-def detect_outliers(df: pd.DataFrame, column):
+def detect_outliers(df: pd.DataFrame, column, method="iqr"):
 
-    q1 = df[column].quantile(0.25)
-    q3 = df[column].quantile(0.75)
+    if method == "iqr":
 
-    iqr = q3 - q1
+        q1 = df[column].quantile(0.25)
+        q3 = df[column].quantile(0.75)
 
-    lower = q1 - 1.5 * iqr
-    upper = q3 + 1.5 * iqr
+        iqr = q3 - q1
 
-    return df[(df[column] < lower) | (df[column] > upper)]
+        lower = q1 - 1.5 * iqr
+        upper = q3 + 1.5 * iqr
+
+        return df[(df[column] < lower) | (df[column] > upper)]
+
+    if method == "zscore":
+
+        z = np.abs((df[column] - df[column].mean()) / df[column].std())
+        return df[z > 3]
